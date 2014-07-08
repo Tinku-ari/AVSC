@@ -41,7 +41,7 @@ len(set(joined_data['category'])),len(set(joined_data['company'])),len(set(joine
 len(set(joined_data['brand']))
 
 
-
+avg_U, norm_U=[],[]
 list_feature=['chain','company', 'brand','category']
 print 'feature','avg. entropy', 'normalized entropy'
 for cat in list_feature:
@@ -52,5 +52,21 @@ for cat in list_feature:
      if P!=0: tmp= P*np.log(P) #exclude 0
      U+=tmp
   print cat,-1*U, -1*U/len(unique) # negative to match the definition
+  avg_U.append(-1*U)
+  norm_U.append(-1*U/len(unique))
 # chain category brand company
 # category company brand chain
+
+#plot it
+import matplotlib.pyplot as plt
+
+x_pos = np.arange(len(list_feature))+1
+plt.xticks(x_pos, list_feature)
+plt.plot(x_pos,avg_U,'o--',label="average entropy")
+plt.plot(x_pos,norm_U,'ro--',label="norm. entropy")
+plt.yscale('log')
+plt.ylim(1e-2,3.0)
+plt.ylabel('entropy')
+#plt.ylabel('U=$\Sigma_i P_i log(P_i)$')
+plt.legend()
+plt.show()
